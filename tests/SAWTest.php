@@ -48,7 +48,7 @@ class SAWTest extends TestCase
         ];
 
         // Menghitung SAW
-        $result = $saw->hitungSAW();
+        $result = $saw->hasil();
 
         // Memeriksa apakah hasil sesuai dengan yang diharapkan
         $this->assertEquals($expectedResult, $result);
