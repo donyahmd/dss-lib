@@ -2,7 +2,7 @@
 
 namespace Donyahmd\DssLib;
 
-interface DssMethod
+interface DecisionSupportEngine
 {
     public function hasil();
 }

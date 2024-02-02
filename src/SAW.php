@@ -11,7 +11,7 @@ namespace Donyahmd\DssLib;
  *
  * @package Donyahmd\DssLib
  */
-class SAW implements DssMethod
+class SAW implements DecisionSupportEngine
 {
     /**
      * Data kriteria dan subkriteria yang digunakan dalam perhitungan SAW.
