@@ -1,0 +1,17 @@
+{
+    "name": "donyahmd/dss-lib",
+    "description": "Decision Support System Library Collection",
+    "type": "library",
+    "autoload": {
+        "psr-4": {
+            "Donyahmd\\DssLib\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Doni Ahmad",
+            "email": "donyahmd24@gmail.com"
+        }
+    ],
+    "require": {}
+}
