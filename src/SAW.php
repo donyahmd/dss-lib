@@ -11,7 +11,7 @@ namespace Donyahmd\DssLib;
  *
  * @package Donyahmd\DssLib
  */
-class SAW
+class SAW implements DssMethod
 {
     /**
      * Data kriteria dan subkriteria yang digunakan dalam perhitungan SAW.
@@ -44,7 +44,7 @@ class SAW
      *
      * @return array
      */
-    public function hitungSAW()
+    public function hasil()
     {
         $matriksNormalisasi = $this->normalisasiMatriks();
         $matriksBobot = $this->matriksBobot($matriksNormalisasi);
