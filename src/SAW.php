@@ -1,14 +1,15 @@
 <?php
 
-namespace donyahmd\DssLib;
+namespace Donyahmd\DssLib;
 
 /**
  * Class SAW
  *
  * Class untuk implementasi metode Simple Additive Weighting (SAW) pada sistem pendukung keputusan.
- * SAW digunakan untuk menghitung skor akhir alternatif berdasarkan bobot kriteria dan nilai subkriteria.
+ * SAW digunakan untuk menghitung skor akhir alternatif berdasarkan bobot kriteria dan nilai subkriteria,
+ * dengan opsional konsep cost dan benefit.
  *
- * @package donyahmd\DssLib
+ * @package Donyahmd\DssLib
  */
 class SAW
 {
@@ -20,13 +21,22 @@ class SAW
     private $data;
 
     /**
+     * Menentukan apakah menggunakan konsep cost dan benefit.
+     *
+     * @var bool
+     */
+    private $gunakanCostBenefit;
+
+    /**
      * Constructor untuk inisialisasi objek SAW dengan data kriteria dan subkriteria.
      *
      * @param array $data
+     * @param bool $gunakanCostBenefit Opsional. Menentukan apakah menggunakan konsep cost dan benefit. Default: false.
      */
-    public function __construct(array $data)
+    public function __construct(array $data, bool $gunakanCostBenefit = false)
     {
         $this->data = $data;
+        $this->gunakanCostBenefit = $gunakanCostBenefit;
     }
 
     /**
@@ -59,7 +69,7 @@ class SAW
 
             // Normalisasi nilai subkriteria
             foreach ($this->data['subkriteria'][$kriteria] as $alternatif => $skor) {
-                $matriksNormalisasi[$kriteria][$alternatif] = $skor / $nilaiMaksimal;
+                $matriksNormalisasi[$kriteria][$alternatif] = $this->normalisasi($skor, $nilaiMaksimal);
             }
         }
 
@@ -67,7 +77,7 @@ class SAW
     }
 
     /**
-     * Mengalikan matriks normalisasi dengan bobot kriteria.
+     * Mengalikan matriks normalisasi dengan bobot kriteria, dengan mempertimbangkan konsep cost dan benefit (opsional).
      *
      * @param array $matriksNormalisasi
      * @return array
@@ -78,12 +88,45 @@ class SAW
 
         // Terapkan bobot pada matriks normalisasi
         foreach ($matriksNormalisasi as $kriteria => $nilai) {
+            $isCost = $this->gunakanCostBenefit && $this->data['jenis'][$kriteria] === 'cost';
+
             foreach ($nilai as $alternatif => $skorNormalisasi) {
-                $matriksBobot[$kriteria][$alternatif] = $skorNormalisasi * $this->data['bobot'][$kriteria];
+                $matriksBobot[$kriteria][$alternatif] = $this->terapkanBobot($skorNormalisasi, $this->data['bobot'][$kriteria], $isCost);
             }
         }
 
         return $matriksBobot;
+    }
+
+    /**
+     * Normalisasi nilai dengan membaginya oleh nilai maksimal.
+     *
+     * @param float $nilai
+     * @param float $nilaiMaksimal
+     * @return float
+     */
+    private function normalisasi($nilai, $nilaiMaksimal)
+    {
+        return $nilai / $nilaiMaksimal;
+    }
+
+    /**
+     * Mengaplikasikan bobot dengan mempertimbangkan konsep cost dan benefit (opsional).
+     *
+     * @param float $nilai
+     * @param float $bobot
+     * @param bool $isCost
+     * @return float
+     */
+    private function terapkanBobot($nilai, $bobot, $isCost)
+    {
+        if ($isCost) {
+            // Jika kriteria bersifat cost, kurangkan bobot dari 1
+            return $nilai * (1 - $bobot);
+        } else {
+            // Jika kriteria bersifat benefit, biarkan bobot seperti biasa
+            return $nilai * $bobot;
+        }
     }
 
     /**
