@@ -140,7 +140,7 @@ class SAW
         $skorAkhir = [];
 
         // Jumlahkan skor terbobot untuk setiap alternatif
-        foreach ($matriksBobot['kriteria1'] as $alternatif => $skor) {
+        foreach ($matriksBobot[array_key_first($matriksBobot)] as $alternatif => $skor) {
             $skorAkhir[$alternatif] = array_sum(array_column($matriksBobot, $alternatif));
         }
 
