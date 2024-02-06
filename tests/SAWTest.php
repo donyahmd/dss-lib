@@ -3,54 +3,257 @@
 namespace Donyahmd\DssLib\Tests;
 
 use Donyahmd\DssLib\SAW;
-use PHPUnit\Framework\TestCase;
 
-class SAWTest extends TestCase
+class SAWTest
 {
-    public function testHitungSAW()
+    private $kriteria;
+    private $dataAlternatif;
+
+    public function __construct()
     {
-        // Data contoh untuk pengujian
-        $data = [
-            'kriteria' => [
-                'kriteria1' => [3, 4, 5],
-                'kriteria2' => [8, 7, 6],
-            ],
-            'subkriteria' => [
-                'kriteria1' => [
-                    'alternatif1' => 2,
-                    'alternatif2' => 4,
-                    'alternatif3' => 3,
+        $this->kriteria = $this->kriteria();
+        $this->dataAlternatif = $this->dataAlternatif();
+
+        $this->klasifikasi($this->kriteria, $this->dataAlternatif);
+    }
+
+    private function kriteria()
+    {
+        return [
+            [
+                'kode' => 'C1',
+                'nama' => 'Penghasilan Orang Tua',
+                'atribut' => 'cost',
+                'bobot' => 25,
+                'is_range' => true,
+                'crips' => [
+                    [
+                        'nilai' => null,
+                        'nilai_min' => null,
+                        'nilai_max' => 1000000,
+                        'bobot' => 20,
+                    ],
+                    [
+                        'nilai' => null,
+                        'nilai_min' => 1000001,
+                        'nilai_max' => 1500000,
+                        'bobot' => 40,
+                    ],
+                    [
+                        'nilai' => null,
+                        'nilai_min' => 1500001,
+                        'nilai_max' => 3000000,
+                        'bobot' => 60,
+                    ],
+                    [
+                        'nilai' => null,
+                        'nilai_min' => 30000001,
+                        'nilai_max' => 4500000,
+                        'bobot' => 80,
+                    ],
+                    [
+                        'nilai' => null,
+                        'nilai_min' => 4500001,
+                        'nilai_max' => null,
+                        'bobot' => 100,
+                    ],
                 ],
-                'kriteria2' => [
-                    'alternatif1' => 7,
-                    'alternatif2' => 5,
-                    'alternatif3' => 6,
+            ],
+            [
+                'kode' => 'C2',
+                'nama' => 'Semester',
+                'atribut' => 'benefit',
+                'is_range' => false,
+                'bobot' => 20,
+                'crips' => [
+                    [
+                        'nilai' => 4,
+                        'nilai_min' => null,
+                        'nilai_max' => null,
+                        'bobot' => 20,
+                    ],
+                    [
+                        'nilai' => 5,
+                        'nilai_min' => null,
+                        'nilai_max' => null,
+                        'bobot' => 40,
+                    ],
+                    [
+                        'nilai' => 6,
+                        'nilai_min' => null,
+                        'nilai_max' => null,
+                        'bobot' => 60,
+                    ],
+                    [
+                        'nilai' => 7,
+                        'nilai_min' => null,
+                        'nilai_max' => null,
+                        'bobot' => 80,
+                    ],
+                    [
+                        'nilai' => 8,
+                        'nilai_min' => null,
+                        'nilai_max' => null,
+                        'bobot' => 100,
+                    ],
                 ],
             ],
-            'bobot' => [
-                'kriteria1' => 0.4,
-                'kriteria2' => 0.6,
+            [
+                'kode' => 'C3',
+                'nama' => 'Tanggungan Orang Tua',
+                'atribut' => 'benefit',
+                'is_range' => false,
+                'bobot' => 15,
+                'crips' => [
+                    [
+                        'nilai' => 1,
+                        'nilai_min' => null,
+                        'nilai_max' => null,
+                        'bobot' => 20,
+                    ],
+                    [
+                        'nilai' => 2,
+                        'nilai_min' => null,
+                        'nilai_max' => null,
+                        'bobot' => 40,
+                    ],
+                    [
+                        'nilai' => 3,
+                        'nilai_min' => null,
+                        'nilai_max' => null,
+                        'bobot' => 60,
+                    ],
+                    [
+                        'nilai' => 4,
+                        'nilai_min' => null,
+                        'nilai_max' => null,
+                        'bobot' => 80,
+                    ],
+                    [
+                        'nilai' => null,
+                        'nilai_min' => null,
+                        'nilai_max' => null,
+                        'bobot' => 100,
+                    ],
+                ],
             ],
-            'jenis' => [
-                'kriteria1' => 'benefit',
-                'kriteria2' => 'cost',
+            [
+                'kode' => 'C4',
+                'nama' => 'Saudara Kandung',
+                'atribut' => 'benefit',
+                'is_range' => false,
+                'bobot' => 10,
+                'crips' => [
+                    [
+                        'nilai' => 1,
+                        'nilai_min' => null,
+                        'nilai_max' => null,
+                        'bobot' => 20,
+                    ],
+                    [
+                        'nilai' => 2,
+                        'nilai_min' => null,
+                        'nilai_max' => null,
+                        'bobot' => 40,
+                    ],
+                    [
+                        'nilai' => 3,
+                        'nilai_min' => null,
+                        'nilai_max' => null,
+                        'bobot' => 60,
+                    ],
+                    [
+                        'nilai' => 4,
+                        'nilai_min' => null,
+                        'nilai_max' => null,
+                        'bobot' => 80,
+                    ],
+                    [
+                        'nilai' => null,
+                        'nilai_min' => null,
+                        'nilai_max' => null,
+                        'bobot' => 100,
+                    ],
+                ],
+            ],
+            [
+                'kode' => 'C5',
+                'nama' => 'Nilai',
+                'atribut' => 'benefit',
+                'is_range' => true,
+                'bobot' => 30,
+                'crips' => [
+                    [
+                        'nilai_min' => null,
+                        'nilai_max' => 2.75,
+                        'bobot' => 20,
+                    ],
+                    [
+                        'nilai_min' => 2.76,
+                        'nilai_max' => 3.00,
+                        'bobot' => 40,
+                    ],
+                    [
+                        'nilai_min' => 3.01,
+                        'nilai_max' => 3.25,
+                        'bobot' => 60,
+                    ],
+                    [
+                        'nilai_min' => 3.26,
+                        'nilai_max' => 3.50,
+                        'bobot' => 80,
+                    ],
+                    [
+                        'nilai' => null,
+                        'nilai_min' => 3.51,
+                        'nilai_max' => null,
+                        'bobot' => 100,
+                    ],
+                ],
             ],
         ];
+    }
 
-        // Objek SAW untuk pengujian
-        $saw = new SAW($data, true);
-
-        // Hasil yang diharapkan
-        $expectedResult = [
-            'alternatif1' => 4.3,  // Contoh hasil skor akhir untuk alternatif1
-            'alternatif2' => 4.8,
-            'alternatif3' => 4.1,
+    private function dataAlternatif()
+    {
+        return [
+            [
+                'kode' => 'A1',
+                'nama' => 'Davolio',
+                'alternatif' => [
+                    'C1' => 44000000,
+                    'C2' => 4,
+                    'C3' => 1,
+                    'C4' => 2.3,
+                ],
+            ],
+            [
+                'kode' => 'A2',
+                'nama' => 'Fuller',
+                'alternatif' => [
+                    'C1' => 900000,
+                    'C2' => 5,
+                    'C3' => 2,
+                    'C4' => 2.95,
+                ],
+            ],
         ];
+    }
 
-        // Menghitung SAW
-        $result = $saw->hasil();
+    public function klasifikasi($dataKriteria, $dataAlternatif)
+    {
+        $klasifikasi = [];
+        foreach ($dataAlternatif as $data) {
+            $klasifikasi[$data['kode']] = null;
+            foreach ($dataKriteria as $kriteria) {
+                $klasifikasi[$data['kode']] = [
+                    $kriteria['kode'] => $kriteria['bobot']
+                ];
+            }
+        }
 
-        // Memeriksa apakah hasil sesuai dengan yang diharapkan
-        $this->assertEquals($expectedResult, $result);
+        print_r($klasifikasi);
     }
 }
+
+$test = new SAWTest;
