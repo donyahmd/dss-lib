@@ -15,7 +15,7 @@ class SAWTest
         $this->dataAlternatif = $this->dataAlternatif();
 
         $dataKlasifikasi = $this->klasifikasi($this->kriteria, $this->dataAlternatif);
-        print_r($this->normalisasi($dataKlasifikasi));
+        print_r($this->normalisasi($this->kriteria, $dataKlasifikasi));
     }
 
     private function kriteria()
@@ -307,8 +307,14 @@ class SAWTest
         return $klasifikasi;
     }
 
-    public function normalisasi($dataKlasifikasi)
+    public function normalisasi($dataKriteria, $dataKlasifikasi)
     {
+        foreach($dataKlasifikasi as $alternatif => $kriteria) {
+            foreach ($kriteria as $nilai) {
+                
+            }
+        }
+
         return $dataKlasifikasi;
     }
 
