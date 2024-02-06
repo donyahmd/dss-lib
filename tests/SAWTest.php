@@ -221,10 +221,11 @@ class SAWTest
                 'kode' => 'A1',
                 'nama' => 'Davolio',
                 'alternatif' => [
-                    'C1' => 44000000,
+                    'C1' => 4400000,
                     'C2' => 4,
                     'C3' => 1,
-                    'C4' => 2.3,
+                    'C4' => 1,
+                    'C5' => 2.3,
                 ],
             ],
             [
@@ -234,7 +235,8 @@ class SAWTest
                     'C1' => 900000,
                     'C2' => 5,
                     'C3' => 2,
-                    'C4' => 2.95,
+                    'C4' => 2,
+                    'C5' => 2.95,
                 ],
             ],
         ];
@@ -243,17 +245,33 @@ class SAWTest
     public function klasifikasi($dataKriteria, $dataAlternatif)
     {
         $klasifikasi = [];
+
+        // print_r($dataKriteria);
+        // print_r($dataAlternatif);
+        // exit();
+        
+        // Menyusun hasil klasifikasi
         foreach ($dataAlternatif as $data) {
-            $klasifikasi[$data['kode']] = null;
+            $row = [];
+
             foreach ($dataKriteria as $kriteria) {
-                $klasifikasi[$data['kode']] = [
-                    $kriteria['kode'] => $kriteria['bobot']
-                ];
+                if ($kriteria['is_range']) {
+                    //
+                } else {
+                    //
+                }
             }
+
+            $klasifikasi[] = $row;
         }
 
+        // Print hasil klasifikasi
         print_r($klasifikasi);
     }
+
+
+
+
 }
 
-$test = new SAWTest;
+$test = new SAWTest();
