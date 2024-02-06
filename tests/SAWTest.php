@@ -249,16 +249,25 @@ class SAWTest
         // print_r($dataKriteria);
         // print_r($dataAlternatif);
         // exit();
-        
+
         // Menyusun hasil klasifikasi
         foreach ($dataAlternatif as $data) {
             $row = [];
 
-            foreach ($dataKriteria as $kriteria) {
-                if ($kriteria['is_range']) {
-                    //
-                } else {
-                    //
+            foreach ($data['alternatif'] as $kode => $nilai) {
+                foreach ($dataKriteria as $kriteria) {
+                    if ($kriteria['kode'] == $kode) {
+                        // $row[$kode] = $kriteria['bobot'];
+                        foreach ($kriteria['crips'] as $crip) {
+                            if ($kriteria['is_range']) {
+                                if ($crip['nilai_min'] <= $nilai && $crip['nilai_max'] >= $nilai) {
+                                    # code...
+                                }
+                            } else {
+                                // jika bukan range
+                            }
+                        }
+                    }
                 }
             }
 
@@ -268,9 +277,6 @@ class SAWTest
         // Print hasil klasifikasi
         print_r($klasifikasi);
     }
-
-
-
 
 }
 
