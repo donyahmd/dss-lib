@@ -200,12 +200,12 @@ class SAWTest
                     ],
                     [
                         'nilai_min' => 3.26,
-                        'nilai_max' => 3.50,
+                        'nilai_max' => 3.49,
                         'bobot' => 80,
                     ],
                     [
                         'nilai' => null,
-                        'nilai_min' => 3.51,
+                        'nilai_min' => 3.50,
                         'nilai_max' => null,
                         'bobot' => 100,
                     ],
@@ -250,6 +250,28 @@ class SAWTest
                     'C5' => 3.6,
                 ],
             ],
+            [
+                'kode' => 'A4',
+                'nama' => 'Peacock',
+                'alternatif' => [
+                    'C1' => 4500000,
+                    'C2' => 7,
+                    'C3' => 4,
+                    'C4' => 4,
+                    'C5' => 3.5,
+                ],
+            ],
+            [
+                'kode' => 'A5',
+                'nama' => 'Alpha',
+                'alternatif' => [
+                    'C1' => 1500000,
+                    'C2' => 4,
+                    'C3' => 2,
+                    'C4' => 3,
+                    'C5' => 3.5,
+                ],
+            ],
         ];
     }
 
@@ -281,7 +303,6 @@ class SAWTest
             $klasifikasi[$data['kode']] = $row;
         }
 
-        // Print hasil klasifikasi
         print_r($klasifikasi);
     }
 
