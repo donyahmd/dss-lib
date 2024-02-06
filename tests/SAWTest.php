@@ -309,15 +309,29 @@ class SAWTest
 
     public function normalisasi($dataKriteria, $dataKlasifikasi)
     {
-        foreach($dataKlasifikasi as $alternatif => $kriteria) {
-            foreach ($kriteria as $nilai) {
-                
+        $klasifikasiCostBenefit = [];
+        foreach ($dataKriteria as $kriteria) {
+            $klasifikasiCostBenefit[$kriteria['kode']] = $kriteria['atribut'];
+        }
+
+        $nilaiMinMaxKriteria = [];
+        foreach($dataKlasifikasi as $klasifikasiNilai) {
+            foreach ($klasifikasiNilai as $kodeKriteria => $nilai) {
+                $atribut = $klasifikasiCostBenefit[$kodeKriteria];
+                if ($atribut == 'cost') {
+                    if (!isset($nilaiMinMaxKriteria[$kodeKriteria]) || $nilai < $nilaiMinMaxKriteria[$kodeKriteria]) {
+                        $nilaiMinMaxKriteria[$kodeKriteria] = $nilai;
+                    }
+                } elseif ($atribut == 'benefit') {
+                    if (!isset($nilaiMinMaxKriteria[$kodeKriteria]) || $nilai > $nilaiMinMaxKriteria[$kodeKriteria]) {
+                        $nilaiMinMaxKriteria[$kodeKriteria] = $nilai;
+                    }
+                }
             }
         }
 
-        return $dataKlasifikasi;
+        return $nilaiMinMaxKriteria;
     }
-
 }
 
 $test = new SAWTest();
