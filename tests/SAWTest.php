@@ -47,7 +47,7 @@ class SAWTest
                     ],
                     [
                         'nilai' => null,
-                        'nilai_min' => 30000001,
+                        'nilai_min' => 3000001,
                         'nilai_max' => 4500000,
                         'bobot' => 80,
                     ],
@@ -232,11 +232,22 @@ class SAWTest
                 'kode' => 'A2',
                 'nama' => 'Fuller',
                 'alternatif' => [
-                    'C1' => 900000,
+                    'C1' => 1400000,
                     'C2' => 5,
                     'C3' => 2,
                     'C4' => 2,
                     'C5' => 2.95,
+                ],
+            ],
+            [
+                'kode' => 'A3',
+                'nama' => 'Leverling',
+                'alternatif' => [
+                    'C1' => 2500000,
+                    'C2' => 6,
+                    'C3' => 3,
+                    'C4' => 3,
+                    'C5' => 3.6,
                 ],
             ],
         ];
@@ -245,33 +256,29 @@ class SAWTest
     public function klasifikasi($dataKriteria, $dataAlternatif)
     {
         $klasifikasi = [];
-
-        // print_r($dataKriteria);
-        // print_r($dataAlternatif);
-        // exit();
-
-        // Menyusun hasil klasifikasi
         foreach ($dataAlternatif as $data) {
             $row = [];
 
             foreach ($data['alternatif'] as $kode => $nilai) {
                 foreach ($dataKriteria as $kriteria) {
                     if ($kriteria['kode'] == $kode) {
-                        // $row[$kode] = $kriteria['bobot'];
                         foreach ($kriteria['crips'] as $crip) {
                             if ($kriteria['is_range']) {
-                                if ($crip['nilai_min'] <= $nilai && $crip['nilai_max'] >= $nilai) {
-                                    # code...
+                                if (($crip['nilai_min'] === null || $nilai >= $crip['nilai_min']) &&
+                                    ($crip['nilai_max'] === null || $nilai <= $crip['nilai_max'])) {
+                                    $row[$kode] = $crip['bobot'];
                                 }
                             } else {
-                                // jika bukan range
+                                if ($crip['nilai'] === $nilai) {
+                                    $row[$kode] = $crip['bobot'];
+                                }
                             }
                         }
                     }
                 }
             }
 
-            $klasifikasi[] = $row;
+            $klasifikasi[$data['kode']] = $row;
         }
 
         // Print hasil klasifikasi
