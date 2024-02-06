@@ -310,19 +310,25 @@ class SAWTest
     public function normalisasi($dataKriteria, $dataKlasifikasi)
     {
         $klasifikasiCostBenefit = [];
+        // Memetakan atribut cost atau benefit dari setiap kriteria
         foreach ($dataKriteria as $kriteria) {
             $klasifikasiCostBenefit[$kriteria['kode']] = $kriteria['atribut'];
         }
 
         $nilaiMinMaxKriteria = [];
-        foreach($dataKlasifikasi as $klasifikasiNilai) {
+        // Inisialisasi nilai normalisasi untuk setiap alternatif
+        $normalisasi = [];
+        foreach($dataKlasifikasi as $alternatif => $klasifikasiNilai) {
             foreach ($klasifikasiNilai as $kodeKriteria => $nilai) {
+                // Memeriksa apakah kriteria merupakan cost atau benefit
                 $atribut = $klasifikasiCostBenefit[$kodeKriteria];
                 if ($atribut == 'cost') {
+                    // Jika cost, cari nilai terkecil
                     if (!isset($nilaiMinMaxKriteria[$kodeKriteria]) || $nilai < $nilaiMinMaxKriteria[$kodeKriteria]) {
                         $nilaiMinMaxKriteria[$kodeKriteria] = $nilai;
                     }
                 } elseif ($atribut == 'benefit') {
+                    // Jika benefit, cari nilai terbesar
                     if (!isset($nilaiMinMaxKriteria[$kodeKriteria]) || $nilai > $nilaiMinMaxKriteria[$kodeKriteria]) {
                         $nilaiMinMaxKriteria[$kodeKriteria] = $nilai;
                     }
@@ -330,8 +336,25 @@ class SAWTest
             }
         }
 
-        return $nilaiMinMaxKriteria;
+        // Menghitung nilai normalisasi untuk setiap alternatif
+        foreach($dataKlasifikasi as $alternatif => $klasifikasiNilai) {
+            foreach ($klasifikasiNilai as $kodeKriteria => $nilai) {
+                // Memeriksa apakah kriteria merupakan cost atau benefit
+                $atribut = $klasifikasiCostBenefit[$kodeKriteria];
+                if ($atribut == 'cost') {
+                    // Jika cost, nilai normalisasi adalah nilai terkecil dibagi dengan nilai alternatif
+                    $normalisasi[$alternatif][$kodeKriteria] = $nilaiMinMaxKriteria[$kodeKriteria] != 0 ? $nilaiMinMaxKriteria[$kodeKriteria] / $nilai : 0;
+                } elseif ($atribut == 'benefit') {
+                    // Jika benefit, nilai normalisasi adalah nilai alternatif dibagi dengan nilai terbesar
+                    $normalisasi[$alternatif][$kodeKriteria] = $nilai != 0 ? $nilai / $nilaiMinMaxKriteria[$kodeKriteria] : 0;
+                }
+            }
+        }
+
+        return $normalisasi;
     }
+
+
 }
 
 $test = new SAWTest();
