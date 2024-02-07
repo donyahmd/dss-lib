@@ -4,5 +4,5 @@ namespace Donyahmd\DssLib;
 
 interface DecisionSupportEngine
 {
-    public function hasil();
+    public function peringkat($ascending = true);
 }

@@ -2,23 +2,21 @@
 
 namespace Donyahmd\DssLib\Tests;
 
+require_once __DIR__ . '/../vendor/autoload.php'; // Pastikan path-nya sesuai dengan struktur proyek Anda
+
 use Donyahmd\DssLib\SAW;
 
 class SAWTest
 {
-    private $kriteria;
-    private $dataAlternatif;
-
     public function __construct()
     {
-        $this->kriteria = $this->kriteria();
-        $this->dataAlternatif = $this->dataAlternatif();
-
-        $dataKlasifikasi = $this->klasifikasi($this->kriteria, $this->dataAlternatif);
-        $dataNormalisasi = $this->normalisasi($this->kriteria, $dataKlasifikasi);
-        $pembobotanKriteria = $this->pembobotanKriteria($this->kriteria, $dataNormalisasi);
-        $jumlahPembobotanPerAlternatif = $this->jumlahPembobotanPerAlternatif($pembobotanKriteria);
-        print_r($this->peringkat($jumlahPembobotanPerAlternatif));
+        $saw = new SAW($this->kriteria(), $this->dataAlternatif());
+        print_r($saw->klasifikasi()
+                    ->normalisasi()
+                    ->pembobotanKriteria()
+                    ->jumlahPembobotanPerAlternatif()
+                    ->peringkat()
+                );
     }
 
     private function kriteria()
@@ -277,124 +275,6 @@ class SAWTest
                 ],
             ],
         ];
-    }
-
-    public function klasifikasi($dataKriteria, $dataAlternatif)
-    {
-        $klasifikasi = [];
-        foreach ($dataAlternatif as $data) {
-            $row = [];
-
-            foreach ($data['alternatif'] as $kode => $nilai) {
-                foreach ($dataKriteria as $kriteria) {
-                    if ($kriteria['kode'] == $kode) {
-                        foreach ($kriteria['crips'] as $crip) {
-                            if ($kriteria['is_range']) {
-                                if (($crip['nilai_min'] === null || $nilai >= $crip['nilai_min']) &&
-                                    ($crip['nilai_max'] === null || $nilai <= $crip['nilai_max'])) {
-                                    $row[$kode] = $crip['bobot'];
-                                }
-                            } else {
-                                if ($crip['nilai'] === $nilai) {
-                                    $row[$kode] = $crip['bobot'];
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-            $klasifikasi[$data['kode']] = $row;
-        }
-
-        return $klasifikasi;
-    }
-
-    public function normalisasi($dataKriteria, $dataKlasifikasi)
-    {
-        $klasifikasiCostBenefit = [];
-        // Memetakan atribut cost atau benefit dari setiap kriteria
-        foreach ($dataKriteria as $kriteria) {
-            $klasifikasiCostBenefit[$kriteria['kode']] = $kriteria['atribut'];
-        }
-
-        $nilaiMinMaxKriteria = [];
-        // Inisialisasi nilai normalisasi untuk setiap alternatif
-        $normalisasi = [];
-        foreach($dataKlasifikasi as $alternatif => $klasifikasiNilai) {
-            foreach ($klasifikasiNilai as $kodeKriteria => $nilai) {
-                // Memeriksa apakah kriteria merupakan cost atau benefit
-                $atribut = $klasifikasiCostBenefit[$kodeKriteria];
-                if ($atribut == 'cost') {
-                    // Jika cost, cari nilai terkecil
-                    if (!isset($nilaiMinMaxKriteria[$kodeKriteria]) || $nilai < $nilaiMinMaxKriteria[$kodeKriteria]) {
-                        $nilaiMinMaxKriteria[$kodeKriteria] = $nilai;
-                    }
-                } elseif ($atribut == 'benefit') {
-                    // Jika benefit, cari nilai terbesar
-                    if (!isset($nilaiMinMaxKriteria[$kodeKriteria]) || $nilai > $nilaiMinMaxKriteria[$kodeKriteria]) {
-                        $nilaiMinMaxKriteria[$kodeKriteria] = $nilai;
-                    }
-                }
-            }
-        }
-
-        // Menghitung nilai normalisasi untuk setiap alternatif
-        foreach($dataKlasifikasi as $alternatif => $klasifikasiNilai) {
-            foreach ($klasifikasiNilai as $kodeKriteria => $nilai) {
-                // Memeriksa apakah kriteria merupakan cost atau benefit
-                $atribut = $klasifikasiCostBenefit[$kodeKriteria];
-                if ($atribut == 'cost') {
-                    // Jika cost, nilai normalisasi adalah nilai terkecil dibagi dengan nilai alternatif
-                    $normalisasi[$alternatif][$kodeKriteria] = $nilaiMinMaxKriteria[$kodeKriteria] != 0 ? $nilaiMinMaxKriteria[$kodeKriteria] / $nilai : 0;
-                } elseif ($atribut == 'benefit') {
-                    // Jika benefit, nilai normalisasi adalah nilai alternatif dibagi dengan nilai terbesar
-                    $normalisasi[$alternatif][$kodeKriteria] = $nilai != 0 ? $nilai / $nilaiMinMaxKriteria[$kodeKriteria] : 0;
-                }
-            }
-        }
-
-        return $normalisasi;
-    }
-
-    public function pembobotanKriteria($dataKriteria, $dataNormalisasi)
-    {
-        $output = [];
-
-        foreach ($dataNormalisasi as $key => $values) {
-            $output[$key] = [];
-            foreach ($values as $subkey => $value) {
-                foreach ($dataKriteria as $kriteria) {
-                    if ($subkey === $kriteria['kode']) {
-                        $output[$key][$subkey] = $value * $kriteria['bobot'];
-                        break;
-                    }
-                }
-            }
-        }
-
-        return $output;
-    }
-
-    public function jumlahPembobotanPerAlternatif($dataNormalisasi)
-    {
-        $output = [];
-
-        foreach ($dataNormalisasi as $key => $values) {
-            $output[$key] = array_sum($values);
-        }
-
-        return $output;
-    }
-
-    public function peringkat($data, $ascending = true)
-    {
-        if ($ascending) {
-            arsort($data);
-        } else {
-            asort($data);
-        }
-        return $data;
     }
 }
 
