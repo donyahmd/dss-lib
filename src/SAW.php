@@ -208,4 +208,20 @@ class SAW implements DecisionSupportEngine
     {
         return $this->peringkat;
     }
+
+    /**
+     * Mengembalikan semua perhitungan dan hasil.
+     *
+     * @return array Hasil semua perhitungan.
+     */
+    public function semua()
+    {
+        return [
+            'klasifikasi' => $this->klasifikasi,
+            'normalisasi' => $this->normalisasi,
+            'pembobotan' => $this->pembobotan,
+            'jumlahPembobotan' => $this->jumlahPembobotan,
+            'peringkat' => $this->peringkat
+        ];
+    }
 }

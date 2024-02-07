@@ -11,12 +11,13 @@ class SAWTest
     public function __construct()
     {
         $saw = new SAW($this->kriteria(), $this->dataAlternatif());
-        print_r($saw->klasifikasi()
-                    ->normalisasi()
-                    ->pembobotanKriteria()
-                    ->jumlahPembobotanPerAlternatif()
-                    ->peringkat()
-                );
+        $perhitunganSaw = $saw->klasifikasi()
+            ->normalisasi()
+            ->pembobotanKriteria()
+            ->jumlahPembobotanPerAlternatif()
+            ->peringkat();
+        $hasil = $perhitunganSaw->semua();
+        print_r($hasil);
     }
 
     private function kriteria()
