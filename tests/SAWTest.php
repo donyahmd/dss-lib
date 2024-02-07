@@ -15,7 +15,10 @@ class SAWTest
         $this->dataAlternatif = $this->dataAlternatif();
 
         $dataKlasifikasi = $this->klasifikasi($this->kriteria, $this->dataAlternatif);
-        print_r($this->normalisasi($this->kriteria, $dataKlasifikasi));
+        $dataNormalisasi = $this->normalisasi($this->kriteria, $dataKlasifikasi);
+        $pembobotanKriteria = $this->pembobotanKriteria($this->kriteria, $dataNormalisasi);
+        $jumlahPembobotanPerAlternatif = $this->jumlahPembobotanPerAlternatif($pembobotanKriteria);
+        print_r($this->peringkat($jumlahPembobotanPerAlternatif));
     }
 
     private function kriteria()
@@ -354,7 +357,45 @@ class SAWTest
         return $normalisasi;
     }
 
+    public function pembobotanKriteria($dataKriteria, $dataNormalisasi)
+    {
+        $output = [];
 
+        foreach ($dataNormalisasi as $key => $values) {
+            $output[$key] = [];
+            foreach ($values as $subkey => $value) {
+                foreach ($dataKriteria as $kriteria) {
+                    if ($subkey === $kriteria['kode']) {
+                        $output[$key][$subkey] = $value * $kriteria['bobot'];
+                        break;
+                    }
+                }
+            }
+        }
+
+        return $output;
+    }
+
+    public function jumlahPembobotanPerAlternatif($dataNormalisasi)
+    {
+        $output = [];
+
+        foreach ($dataNormalisasi as $key => $values) {
+            $output[$key] = array_sum($values);
+        }
+
+        return $output;
+    }
+
+    public function peringkat($data, $ascending = true)
+    {
+        if ($ascending) {
+            arsort($data);
+        } else {
+            asort($data);
+        }
+        return $data;
+    }
 }
 
 $test = new SAWTest();
