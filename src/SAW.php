@@ -63,7 +63,6 @@ class SAW implements DecisionSupportEngine
     {
         $matriksNormalisasi = [];
 
-        // Lakukan normalisasi untuk setiap kriteria
         foreach ($this->data['kriteria'] as $kriteria => $nilai) {
             $nilaiMaksimal = max($nilai);
 
@@ -86,7 +85,6 @@ class SAW implements DecisionSupportEngine
     {
         $matriksBobot = [];
 
-        // Terapkan bobot pada matriks normalisasi
         foreach ($matriksNormalisasi as $kriteria => $nilai) {
             $isCost = $this->gunakanCostBenefit && $this->data['jenis'][$kriteria] === 'cost';
 
