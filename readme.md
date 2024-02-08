@@ -1,62 +1,105 @@
 # SAW (Simple Additive Weighting) Decision Support Engine
 
-SAW is an implementation of a Decision Support Engine (DSE) to perform analysis and decision-making based on the Simple Additive Weighting method.
+SAW (Simple Additive Weighting) adalah salah satu metode dalam pengambilan keputusan multi-kriteria yang sederhana namun efektif. Library ini menyediakan implementasi SAW untuk menghitung peringkat alternatif berdasarkan kriteria yang diberikan.
 
-## Installation
+## Penggunaan
 
-You can install this library via Composer. Run the following command in your terminal:
+Untuk menggunakan library ini, Anda perlu mengikuti langkah-langkah berikut:
+
+### Instalasi
 
 ```bash
-composer require donyahmd/dss-lib
+composer require donyahmd/saw-lib
 ```
 
-## Usage
+### Penggunaan dalam Aplikasi Anda
 
-Here is an example of using the SAW class:
+Setelah Anda berhasil menginstal library ini, Anda dapat menggunakannya dalam aplikasi Anda dengan cara berikut:
+
+1. Import kelas SAW ke dalam file PHP aplikasi Anda:
 
 ```php
-<?php
-
 use Donyahmd\DssLib\SAW;
-
-// Define criteria and alternative data
-$criteria = [
-    // Criteria definition
-];
-
-$alternativeData = [
-    // Alternative data
-];
-
-// Create an instance of SAW with criteria and alternative data
-$saw = new SAW($criteria, $alternativeData);
-
-// Perform classification
-$saw->classification();
-
-// Perform normalization
-$saw->normalization();
-
-// Perform criteria weighting
-$saw->criteriaWeighting();
-
-// Calculate the total weighting per alternative
-$saw->totalWeightingPerAlternative();
-
-// Perform ranking
-$saw->ranking();
-
-// Get the ranking result
-$rankingResult = $saw->result();
-
-// Display the result
-print_r($rankingResult);
 ```
 
-## Contributing
+2. Buat objek SAW dengan menyediakan kriteria dan data alternatif dalam format array yang sesuai. Berikut adalah contoh cara melakukannya:
 
-If you find any issues or would like to contribute, please feel free to create an issue or submit a pull request.
+```php
+$saw = new SAW($this->kriteria(), $this->dataAlternatif());
+$perhitunganSaw = $saw->klasifikasi()
+    ->normalisasi()
+    ->pembobotanKriteria()
+    ->jumlahPembobotanPerAlternatif()
+    ->peringkat();
+$hasil = $perhitunganSaw->semua();
+print_r($hasil);
+```
 
-## License
+Pastikan bahwa format array untuk kriteria dan data alternatif sesuai dengan yang dijelaskan di bawah.
 
-This project is licensed under the MIT License. See the LICENSE file for more information.
+## Format Array untuk Kriteria
+
+Format array untuk kriteria harus mencakup elemen-elemen berikut:
+
+**kode**: Kode unik untuk setiap kriteria.\
+**nama**: Nama kriteria.\
+**atribut**: Atribut kriteria, bisa berupa 'cost' atau 'benefit'.\
+**bobot**: Bobot kriteria.\
+**is_range**: Boolean yang menunjukkan apakah kriteria menggunakan rentang nilai atau nilai tunggal.\
+**crips**: Daftar krips (nilai atau rentang nilai) dan bobotnya untuk kriteria tersebut.
+
+Berikut adalah contoh format array untuk kriteria:
+
+```php
+[
+    'kode' => 'C1',
+    'nama' => 'Penghasilan Orang Tua',
+    'atribut' => 'cost',
+    'bobot' => 25,
+    'is_range' => true,
+    'crips' => [
+        [
+            'nilai' => null,
+            'nilai_min' => null,
+            'nilai_max' => 1000000,
+            'bobot' => 20,
+        ],
+        // Tambahkan krips lainnya sesuai kebutuhan
+    ],
+],
+```
+
+## Format Array untuk Data Alternatif
+
+Format array untuk data alternatif harus mencakup elemen-elemen berikut:
+
+**kode**: Kode unik untuk setiap alternatif.\
+**nama**: Nama alternatif.\
+**alternatif**: Nilai atau rentang nilai untuk setiap kriteria yang digunakan dalam evaluasi.
+
+Berikut adalah contoh format array untuk data alternatif:
+
+```php
+[
+    'kode' => 'A1',
+    'nama' => 'Davolio',
+    'alternatif' => [
+        'C1' => 4400000,
+        'C2' => 4,
+        'C3' => 1,
+        'C4' => 1,
+        'C5' => 2.3,
+    ],
+],
+
+```
+
+Pastikan untuk menyediakan kriteria dan data alternatif dalam format array yang sesuai saat menggunakan fungsi SAW.
+
+## Kontribusi
+
+Anda dipersilakan untuk berkontribusi pada pengembangan library ini dengan mengirimkan pull request.
+
+## Lisensi
+
+Proyek ini dilisensikan di bawah lisensi MIT. Lihat file LICENSE untuk detailnya.
