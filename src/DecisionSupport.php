@@ -10,16 +10,14 @@ final class DecisionSupport
 
         $result = [];
         foreach ($data as $item) {
-            $crips = [];
-            foreach ($item['sub'] as $subItem) {
-                $crip = [
+            $crips = array_map(function ($subItem) {
+                return [
                     'nilai' => $subItem['name'],
                     'nilai_min' => $subItem['value_min'],
                     'nilai_max' => $subItem['value_max'],
                     'bobot' => $subItem['weight']
                 ];
-                $crips[] = $crip;
-            }
+            }, $item['sub']);
 
             $result[] = [
                 'kode' => $item['code'],
@@ -31,6 +29,7 @@ final class DecisionSupport
             ];
         }
 
-        return json_encode($result, JSON_PRETTY_PRINT);
+        return $result;
     }
+
 }
