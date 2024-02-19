@@ -4,12 +4,14 @@ namespace Donyahmd\DssLib\Tests;
 
 require_once __DIR__ . '/../vendor/autoload.php'; // Pastikan path-nya sesuai dengan struktur proyek Anda
 
-use Donyahmd\DssLib\SAW;
+use Donyahmd\DssLib\DecisionSupport;
+use Donyahmd\DssLib\Engine\SAW;
 
 class SAWTest
 {
     public function __construct()
     {
+        return print_r(DecisionSupport::transform($this->kriteria()));
         $saw = new SAW($this->kriteria(), $this->dataAlternatif());
         $perhitunganSaw = $saw->klasifikasi()
             ->normalisasi()

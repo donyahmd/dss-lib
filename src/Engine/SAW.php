@@ -1,12 +1,14 @@
 <?php
 
-namespace Donyahmd\DssLib;
+namespace Donyahmd\DssLib\Engine;
+
+use Donyahmd\DssLib\Interface\DecisionSupportInterface;
 
 /**
- * Kelas SAW (Simple Additive Weighting) merupakan implementasi dari Decision Support Engine (DSE) untuk
+ * Kelas SAW (Simple Additive Weighting) merupakan implementasi dari Decision Support Interface (DSE) untuk
  * melakukan analisis dan pengambilan keputusan berdasarkan metode Simple Additive Weighting.
  */
-class SAW implements DecisionSupportEngine
+class SAW implements DecisionSupportInterface
 {
     /**
      * @var array $data Data alternatif yang akan dievaluasi.
