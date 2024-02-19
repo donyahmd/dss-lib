@@ -4,20 +4,20 @@ namespace Donyahmd\DssLib;
 
 final class DecisionSupport
 {
-    public static function criteriaTransform($data)
+    public static function criteriaTransform($criteriaWithSub)
     {
-        $data = json_decode($data, true);
-
         $result = [];
-        foreach ($data as $item) {
-            $crips = array_map(function ($subItem) {
-                return [
+        foreach ($criteriaWithSub as $item) {
+            $crips = [];
+            foreach ($item['sub'] as $subItem) {
+                $crip = [
                     'nilai' => $subItem['name'],
                     'nilai_min' => $subItem['value_min'],
                     'nilai_max' => $subItem['value_max'],
                     'bobot' => $subItem['weight']
                 ];
-            }, $item['sub']);
+                $crips[] = $crip;
+            }
 
             $result[] = [
                 'kode' => $item['code'],
@@ -31,5 +31,4 @@ final class DecisionSupport
 
         return $result;
     }
-
 }
