@@ -31,4 +31,9 @@ final class DecisionSupport
 
         return $result;
     }
+
+    public static function alternativeTransform($alternative)
+    {
+        //
+    }
 }

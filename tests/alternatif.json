@@ -2,7 +2,7 @@
     {
         "kode": "A1",
         "nama": "Davolio",
-        "alternatif": {
+        "nilai": {
             "C1": 4400000,
             "C2": 4,
             "C3": 1,
@@ -13,7 +13,7 @@
     {
         "kode": "A2",
         "nama": "Fuller",
-        "alternatif": {
+        "nilai": {
             "C1": 1400000,
             "C2": 5,
             "C3": 2,
@@ -24,7 +24,7 @@
     {
         "kode": "A3",
         "nama": "Leverling",
-        "alternatif": {
+        "nilai": {
             "C1": 2500000,
             "C2": 6,
             "C3": 3,
@@ -35,7 +35,7 @@
     {
         "kode": "A4",
         "nama": "Peacock",
-        "alternatif": {
+        "nilai": {
             "C1": 4500000,
             "C2": 7,
             "C3": 4,
@@ -46,7 +46,7 @@
     {
         "kode": "A5",
         "nama": "Alpha",
-        "alternatif": {
+        "nilai": {
             "C1": 1500000,
             "C2": 4,
             "C3": 2,

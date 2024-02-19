@@ -11,7 +11,7 @@ class SAWTest
 {
     public function __construct()
     {
-        return print_r(DecisionSupport::transform($this->kriteria()));
+        // return print_r($this->dataAlternatif());
         $saw = new SAW($this->kriteria(), $this->dataAlternatif());
         $perhitunganSaw = $saw->klasifikasi()
             ->normalisasi()
@@ -225,7 +225,7 @@ class SAWTest
             [
                 'kode' => 'A1',
                 'nama' => 'Davolio',
-                'alternatif' => [
+                'nilai' => [
                     'C1' => 4400000,
                     'C2' => 4,
                     'C3' => 1,
@@ -236,7 +236,7 @@ class SAWTest
             [
                 'kode' => 'A2',
                 'nama' => 'Fuller',
-                'alternatif' => [
+                'nilai' => [
                     'C1' => 1400000,
                     'C2' => 5,
                     'C3' => 2,
@@ -247,7 +247,7 @@ class SAWTest
             [
                 'kode' => 'A3',
                 'nama' => 'Leverling',
-                'alternatif' => [
+                'nilai' => [
                     'C1' => 2500000,
                     'C2' => 6,
                     'C3' => 3,
@@ -258,7 +258,7 @@ class SAWTest
             [
                 'kode' => 'A4',
                 'nama' => 'Peacock',
-                'alternatif' => [
+                'nilai' => [
                     'C1' => 4500000,
                     'C2' => 7,
                     'C3' => 4,
@@ -269,7 +269,7 @@ class SAWTest
             [
                 'kode' => 'A5',
                 'nama' => 'Alpha',
-                'alternatif' => [
+                'nilai' => [
                     'C1' => 1500000,
                     'C2' => 4,
                     'C3' => 2,

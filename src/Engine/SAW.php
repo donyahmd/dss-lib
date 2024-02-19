@@ -67,7 +67,7 @@ class SAW implements DecisionSupportInterface
         $klasifikasi = [];
         foreach ($this->data as $data) {
             $row = [];
-            foreach ($data['alternatif'] as $kode => $nilai) {
+            foreach ($data['nilai'] as $kode => $nilai) {
                 foreach ($this->kriteria as $kriteria) {
                     if ($kriteria['kode'] == $kode) {
                         foreach ($kriteria['crips'] as $crip) {
