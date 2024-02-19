@@ -4,10 +4,10 @@ namespace Donyahmd\DssLib;
 
 final class DecisionSupport
 {
-    public static function transform($data)
+    public static function criteriaTransform($data)
     {
         $data = json_decode($data, true);
-        
+
         $result = [];
         foreach ($data as $item) {
             $crips = [];
